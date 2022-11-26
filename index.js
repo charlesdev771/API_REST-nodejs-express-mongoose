@@ -28,7 +28,7 @@ app.post('/person', async (req, res) => {
 
     if (!name || !salary || !approved)
     {
-        res.status(422).json({error: "All camps its obrigatory"});
+        res.status(422).json({error: "All its obrigatory"});
     }
 
     const person = {
@@ -49,6 +49,37 @@ app.post('/person', async (req, res) => {
 
 });
 
+app.get('/person', async (req, res) => {
+
+    try {
+        
+        const people = await Person.find();
+        res.status(200).json(people);
+
+    } catch (error) {
+        
+    }
+
+
+});
+
+
+app.get('/person/:id', async (req, res) => {
+    const id = req.params.id
+
+    try {
+        const person = await Person.findOne({ _id: id })
+
+        if (!person) {
+            res.status(422).json({ message: 'Usuário não encontrado!' })
+            return
+        }
+
+        res.status(200).json(person)
+    } catch (error) {
+        res.status(500).json({ erro: error })
+    }
+})
 const DB_USER = "ccod";
 const DB_PASSWORD = encodeURIComponent('6VEtZfkLosxcReo3');
 
@@ -58,7 +89,7 @@ mongoose.connect(
     ).then(() => {
 
         console.log("Conected");
-        app.listen(3000);
+        app.listen(4000);
 
     }).catch((err) => console.log(err)
 

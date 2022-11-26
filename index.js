@@ -22,6 +22,33 @@ app.get('/', (req, res) =>{
 
 })
 
+app.post('/person', async (req, res) => {
+
+    const {name, salary, approved} = req.body;
+
+    if (!name || !salary || !approved)
+    {
+        res.status(422).json({error: "All camps its obrigatory"});
+    }
+
+    const person = {
+        name,
+        salary,
+        approved
+    }
+
+    try 
+    
+    {
+        await Person.create(person);
+        res.status(201).json({message: "INSERT success!"});    
+    } catch (error) {
+        res.status(500).json({error: error})
+        
+    }
+
+});
+
 const DB_USER = "ccod";
 const DB_PASSWORD = encodeURIComponent('6VEtZfkLosxcReo3');
 
@@ -36,6 +63,3 @@ mongoose.connect(
     }).catch((err) => console.log(err)
 
     )
-
-
-app.listen(4000);
